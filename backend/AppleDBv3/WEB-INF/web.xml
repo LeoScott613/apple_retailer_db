@@ -15,12 +15,18 @@
         <servlet-name>helloworld</servlet-name>
         <servlet-class>hello.helloworld</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>helloworld</servlet-name>
         <url-pattern>/hello</url-pattern> <!-- 这里可以是你想要的URL路径 -->
     </servlet-mapping>
 
-    <!-- 这里可以添加其他配置，比如 Servlet、Filter、Listener 等 -->
+    <servlet>
+        <servlet-name>controller</servlet-name>
+        <servlet-class>db.controller</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>controller</servlet-name>
+        <url-pattern>/controller</url-pattern> <!-- 这里可以是你想要的URL路径 -->
+    </servlet-mapping>
 
 </web-app>
