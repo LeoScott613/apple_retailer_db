@@ -6,17 +6,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/hello")
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class helloworld extends HttpServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 设置响应类型:
-        resp.setContentType("text/html");
-        // 获取输出流:
-        PrintWriter pw = resp.getWriter();
-        // 写入响应:
-        pw.write("<h1>Hello, world!</h1>");
-        // 最后不要忘记flush强制输出:
-        pw.flush();
+
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+
+        // 处理请求
+        String name = request.getParameter("name");
+        String greeting = "Hello, " + name + "!";
+
+        // 返回响应
+        response.getWriter().write(greeting);
     }
 }
