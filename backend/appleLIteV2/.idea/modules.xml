@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/appleLIteV2.iml" filepath="$PROJECT_DIR$/appleLIteV2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dbmanager/dbmanager.iml" filepath="$PROJECT_DIR$/dbmanager/dbmanager.iml" />
+    </modules>
+  </component>
+</project>
