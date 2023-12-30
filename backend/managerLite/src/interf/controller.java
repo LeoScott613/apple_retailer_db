@@ -1,8 +1,9 @@
 package interf;
 
+import func.queryConstructor;
+
 import java.sql.*;
 import java.util.Scanner;
-import interf.userInterface;
 
 public class controller {
     public static void main(String[] args) {
@@ -18,26 +19,28 @@ public class controller {
         userInterface.welcome();
         //接受輸入，並根据输入建query语句
         Scanner in = new Scanner(System.in);
-        String queryTable = in.nextLine();
-        String selectQuery = String.format("SELECT * FROM %s", queryTable);
+//        String queryTable = in.nextLine();
+//        String selectQuery = String.format("SELECT * FROM %s", queryTable);
         String midQuery = new String();
+        String tableName = new String();
 
         String operation = in.nextLine();
         switch (operation) {
-            case "insert":
-
-                midQuery=String.format("");
+            case "select":
+                userInterface.selectHint();
+                tableName = in.nextLine();
+                midQuery = queryConstructor.selectQuery(tableName);
         }
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
             statement = connection.createStatement();
-            resultSet = statement.executeQuery(selectQuery);
+            resultSet = statement.executeQuery(midQuery);
             metaData = resultSet.getMetaData();
 
             // 打印表头
-            System.out.println("Table: " + queryTable);
+            System.out.println("Table: " + tableName);
             int columnCount = metaData.getColumnCount();
             for (int i = 1; i <= columnCount; i++) {
 //                System.out.println(metaData.getColumnLabel(i) + " (" + metaData.getColumnTypeName(i) + ")");
