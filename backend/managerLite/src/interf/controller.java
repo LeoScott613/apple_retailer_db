@@ -30,16 +30,13 @@ public class controller {
             System.out.println("Table: " + queryTable);
             int columnCount = metaData.getColumnCount();
             for (int i = 1; i <= columnCount; i++) {
-                System.out.println("Column " + i + ": " + metaData.getColumnLabel(i) + " (" + metaData.getColumnTypeName(i) + ")");
+//                System.out.println(metaData.getColumnLabel(i) + " (" + metaData.getColumnTypeName(i) + ")");
+                System.out.print(metaData.getColumnLabel(i)+"\t\t");
             }
+            System.out.println();
 
 
             while (resultSet.next()) {
-//                int id = resultSet.getInt("wno");
-////                String name = resultSet.getString("first_name");
-////                System.out.println("ID: " + id + ", Name: " + name);
-//                System.out.println(id);
-
                 // 通用输出模式
                 for (int i = 1; i <= columnCount; i++) {
                     // 获取不同类型的数据
