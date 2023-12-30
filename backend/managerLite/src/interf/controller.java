@@ -2,6 +2,7 @@ package interf;
 
 import java.sql.*;
 import java.util.Scanner;
+import interf.userInterface;
 
 public class controller {
     public static void main(String[] args) {
@@ -14,6 +15,7 @@ public class controller {
         ResultSetMetaData metaData = null;
 
 
+        userInterface.welcome();
         //接受輸入，並根据输入建query语句
         Scanner in = new Scanner(System.in);
         String queryTable = in.nextLine();
@@ -61,7 +63,7 @@ public class controller {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            System.out.println("end");
+            System.out.println("程序结束");
         }
     }
 }

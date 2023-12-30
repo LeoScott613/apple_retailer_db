@@ -1,7 +1,7 @@
 package interf;
 
 public class userInterface {
-    public void welcome() {
+    public static void welcome() {
         String tableList = "warehouse admin raw product supplier account log";
 
         System.out.println("------------欢迎------------");
