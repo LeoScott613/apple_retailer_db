@@ -46,7 +46,7 @@ public class controller {
             resultSet = statement.executeQuery(midQuery);
             metaData = resultSet.getMetaData();
 
-            // 打印表头
+            //获取表头
             System.out.println("Table: " + tableName);
             int columnCount = metaData.getColumnCount();
             for (int i = 1; i <= columnCount; i++) {
@@ -55,7 +55,7 @@ public class controller {
             }
             System.out.println();
 
-
+            // 查询的业务逻辑：根据表格元数据进行循环输出，所有输出结果只是用Obj装载
             while (resultSet.next()) {
                 // 通用输出模式
                 for (int i = 1; i <= columnCount; i++) {
