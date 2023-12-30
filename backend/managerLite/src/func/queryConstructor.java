@@ -31,14 +31,13 @@ public class queryConstructor {
             default:
                 break;
         }
+        in.close();
         String result = String.format("SELECT * FROM %s",tableName);
         return result;
     }
-    public static String selectQuery(String tableName,int limit) {
-        String result = String.format("SELECT * FROM %s LIMIT %d",tableName,limit);
-        return result;
-    }
     public static String insertQuery() {
+        Scanner in = new Scanner(System.in);
+        userInterface.insertHint();
         return "";
     }
     public static String updateQuery() {

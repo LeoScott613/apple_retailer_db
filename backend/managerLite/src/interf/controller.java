@@ -61,8 +61,8 @@ public class controller {
                     //查询结束
                     break;
                 case "insert":
-                    userInterface.insertHint();
-                    tableName = in.nextLine();
+                    midQuery = queryConstructor.insertQuery();
+
                     break;
                 default:
                     throw new SQLException();
