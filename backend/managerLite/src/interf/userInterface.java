@@ -9,4 +9,7 @@ public class userInterface {
         System.out.println(tableList);
         System.out.println("---------------------------");
     }
+    public static void selectHint() {
+        System.out.println("输入你想要查询的表名，可以是表的中文名也可以是表的原名：");
+    }
 }
