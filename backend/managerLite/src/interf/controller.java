@@ -27,8 +27,25 @@ public class controller {
         String operation = in.nextLine();
         switch (operation) {
             case "select":
+            case "select ":
                 userInterface.selectHint();
                 tableName = in.nextLine();
+                switch (tableName) {
+                    case "仓库":
+                        tableName = "warehouse";
+                    case "管理员":
+                        tableName = "admin";
+                    case "原料":
+                        tableName = "raw";
+                    case "产品":
+                        tableName = "product";
+                    case "账号":
+                        tableName = "account";
+                    case "日志":
+                        tableName = "log";
+                    case "供应商":
+                        tableName = "supplier";
+                }
                 midQuery = queryConstructor.selectQuery(tableName);
         }
 
@@ -44,7 +61,7 @@ public class controller {
             int columnCount = metaData.getColumnCount();
             for (int i = 1; i <= columnCount; i++) {
 //                System.out.println(metaData.getColumnLabel(i) + " (" + metaData.getColumnTypeName(i) + ")");
-                System.out.print(metaData.getColumnLabel(i)+"\t\t");
+                System.out.print(metaData.getColumnLabel(i) + "\t\t");
             }
             System.out.println();
 

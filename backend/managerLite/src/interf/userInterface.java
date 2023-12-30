@@ -2,10 +2,10 @@ package interf;
 
 public class userInterface {
     public static void welcome() {
-        String tableList = "warehouse admin raw product supplier account log";
+        String tableList = "warehouse admin raw\n product supplier account log";
 
         System.out.println("------------欢迎------------");
-        System.out.println("直接输入名字即可查询");
+        System.out.println("数据库中有的数据表");
         System.out.println(tableList);
         System.out.println("---------------------------");
     }
