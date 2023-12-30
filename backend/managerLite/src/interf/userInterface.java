@@ -12,6 +12,12 @@ public class userInterface {
         System.out.println("请先输入操作");
     }
 
+    public static void tableNameHint() {
+        /**
+         * 显示输入表名的提示语
+         */
+        System.out.println("输入你要操作的表，支持中英文(但不要有多余空格)：");
+    }
     public static void selectHint() {
         /**
          * 显示select功能的提示语
@@ -23,7 +29,7 @@ public class userInterface {
         /**
          * 显示insert功能的提示语
          */
-        System.out.println("输入你想插入的表名，表的中文名或者表的原名：");
+        System.out.println("输入你想插入的数据：");
     }
 
     public static void end() {

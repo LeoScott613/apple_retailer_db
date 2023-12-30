@@ -1,49 +1,86 @@
 package func;
+
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Scanner;
+import java.sql.Types.*;
+
 import interf.userInterface;
+
 public class queryConstructor {
-    public static String selectQuery() {
-        Scanner in = new Scanner(System.in);
-        userInterface.selectHint();
-        String tableName = in.next();
-        switch (tableName) {
-            case "仓库":
-                tableName = "warehouse";
-                break;
-            case "管理员":
-                tableName = "admin";
-                break;
-            case "原料":
-                tableName = "raw";
-                break;
-            case "产品":
-                tableName = "product";
-                break;
-            case "账号":
-                tableName = "account";
-                break;
-            case "日志":
-                tableName = "log";
-                break;
-            case "供应商":
-                tableName = "supplier";
-                break;
-            default:
-                break;
-        }
-        in.close();
-        String result = String.format("SELECT * FROM %s",tableName);
-        return result;
+    private String tableName;
+
+    public queryConstructor(String tableName) {
+        this.tableName = tableName;
     }
-    public static String insertQuery() {
-        Scanner in = new Scanner(System.in);
+
+    public String selectQuery() {
+        tableName = translate(tableName);
+        return String.format("SELECT * FROM %s;", tableName);
+    }
+
+    public String insertQuery(ResultSetMetaData metaData) {
+        //准备获取输入
         userInterface.insertHint();
-        return "";
+        Scanner in = new Scanner(System.in);
+        StringBuilder resultBuilder = new StringBuilder("INSERT INTO ");
+        resultBuilder.append(tableName).append(" VALUES (");
+
+        //根据元数据循环获取输入并构造结果
+        try {
+            int columnLength = metaData.getColumnCount();
+            for (int i = 0; i < columnLength; i++) {
+                if (metaData.getColumnType(i+1)!= Types.INTEGER) {
+                    //如果不是数字类型的，都要在插入数据前后用引号包围
+                    resultBuilder.append("\'").append(in.nextLine()).append("\'");
+                }
+                else
+                    resultBuilder.append(in.nextLine());
+                if (i < columnLength - 1) {
+                    resultBuilder.append(", ");
+                }
+            }
+            resultBuilder.append(");");
+        }
+        catch (SQLException e) {
+            System.out.println("insert语句构造器中的SQL操作失败");
+            e.printStackTrace();
+        }
+
+        in.close();
+        return resultBuilder.toString();
     }
+
     public static String updateQuery() {
         return "";
     }
+
     public static String deleteQuery() {
         return "";
+    }
+
+    private void clean() {
+        tableName = null;
+    }
+
+    /**
+     * 将中文表名翻译成英文
+     * @param tableName 待翻译的表名
+     * @return 英文结果，如果不是中文表名输入就返回原文
+     */
+    private static String translate(String tableName) {
+        switch (tableName) {
+            case "仓库" -> tableName = "warehouse";
+            case "管理员" -> tableName = "admin";
+            case "原料" -> tableName = "raw";
+            case "产品" -> tableName = "product";
+            case "账号" -> tableName = "account";
+            case "日志" -> tableName = "log";
+            case "供应商" -> tableName = "supplier";
+            default -> {
+            }
+        }
+        return tableName;
     }
 }

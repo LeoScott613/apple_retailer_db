@@ -32,10 +32,15 @@ public class controller {
             connection = DriverManager.getConnection(url, username, password);
             statement = connection.createStatement();
 
+            // 创建语句构造器
+            userInterface.tableNameHint();
+            tableName = in.next();
+            queryConstructor qConstructor = new queryConstructor(tableName);
+
             switch (operation) {
                 case "select":
                 case "select ":
-                    midQuery = queryConstructor.selectQuery();
+                    midQuery = qConstructor.selectQuery();
 
                     //开始执行查询
                     resultSet = statement.executeQuery(midQuery);
@@ -61,8 +66,14 @@ public class controller {
                     //查询结束
                     break;
                 case "insert":
-                    midQuery = queryConstructor.insertQuery();
-
+                case "insert ":
+                    //1.获取表格元数据
+                    midQuery = qConstructor.selectQuery();
+                    resultSet = statement.executeQuery(midQuery);
+                    metaData = resultSet.getMetaData();
+                    //2.将表格元数据递交给SQL构造器
+                    midQuery = qConstructor.insertQuery(metaData);
+                    System.out.println(midQuery);//将插入语句直接回显，直到稳定了再去数据库中执行插入语句
                     break;
                 default:
                     throw new SQLException();
