@@ -25,31 +25,21 @@ public class controller {
         String tableName = new String();
 
         String operation = in.nextLine();
-        switch (operation) {
-            case "select":
-            case "select ":
-                userInterface.selectHint();
-                tableName = in.nextLine();
-                switch (tableName) {
-                    case "仓库":
-                        tableName = "warehouse";
-                    case "管理员":
-                        tableName = "admin";
-                    case "原料":
-                        tableName = "raw";
-                    case "产品":
-                        tableName = "product";
-                    case "账号":
-                        tableName = "account";
-                    case "日志":
-                        tableName = "log";
-                    case "供应商":
-                        tableName = "supplier";
-                }
-                midQuery = queryConstructor.selectQuery(tableName);
-        }
 
         try {
+            switch (operation) {
+                case "select":
+                case "select ":
+                    userInterface.selectHint();
+                    tableName = in.nextLine();
+                    midQuery = queryConstructor.selectQuery(tableName);
+                    break;
+                case "insert":
+                    break;
+                default:
+                    throw new SQLException();
+            }
+
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
             statement = connection.createStatement();
@@ -92,7 +82,7 @@ public class controller {
                 e.printStackTrace();
             }
             in.close();
-            System.out.println("程序结束");
+            userInterface.end();
         }
     }
 }

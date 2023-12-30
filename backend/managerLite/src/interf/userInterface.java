@@ -12,4 +12,8 @@ public class userInterface {
     public static void selectHint() {
         System.out.println("输入你想要查询的表名，可以是表的中文名也可以是表的原名：");
     }
+
+    public static void end() {
+        System.out.println("*程序结束*");
+    }
 }
