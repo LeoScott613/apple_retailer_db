@@ -20,6 +20,14 @@ public class controller {
         Scanner in = new Scanner(System.in);
         String queryTable = in.nextLine();
         String selectQuery = String.format("SELECT * FROM %s", queryTable);
+        String midQuery = new String();
+
+        String operation = in.nextLine();
+        switch (operation) {
+            case "insert":
+
+                midQuery=String.format("");
+        }
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -63,6 +71,7 @@ public class controller {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            in.close();
             System.out.println("程序结束");
         }
     }
