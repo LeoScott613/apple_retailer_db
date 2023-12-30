@@ -1,7 +1,11 @@
 package func;
-
+import java.util.Scanner;
+import interf.userInterface;
 public class queryConstructor {
-    public static String selectQuery(String tableName) {
+    public static String selectQuery() {
+        Scanner in = new Scanner(System.in);
+        userInterface.selectHint();
+        String tableName = in.next();
         switch (tableName) {
             case "仓库":
                 tableName = "warehouse";
@@ -25,7 +29,7 @@ public class queryConstructor {
                 tableName = "supplier";
                 break;
             default:
-                tableName = "warehouse";
+                break;
         }
         String result = String.format("SELECT * FROM %s",tableName);
         return result;

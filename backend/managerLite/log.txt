@@ -35,3 +35,7 @@ connection实例化成功，但是没有具体的信息，所以语句执行失�
 
 java编译流程：编译类controller的时候，java会检测B有没有被改变，如果B被改变了，那么Java会编译B
 
+将输入的逻辑移入constructor，constructor就需要建立scanner对象。
+所有CRUD的语句构造都需要输入信息
+构造完的输入语句返回来，由controller交给statement执行就好
+

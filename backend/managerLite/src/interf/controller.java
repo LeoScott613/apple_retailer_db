@@ -35,9 +35,7 @@ public class controller {
             switch (operation) {
                 case "select":
                 case "select ":
-                    userInterface.selectHint();
-                    tableName = in.nextLine();
-                    midQuery = queryConstructor.selectQuery(tableName);
+                    midQuery = queryConstructor.selectQuery();
 
                     //开始执行查询
                     resultSet = statement.executeQuery(midQuery);
@@ -60,6 +58,7 @@ public class controller {
                         }
                         System.out.println();
                     }
+                    //查询结束
                     break;
                 case "insert":
                     userInterface.insertHint();
