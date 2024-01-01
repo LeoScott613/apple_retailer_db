@@ -5,6 +5,8 @@ import func.queryConstructor;
 import java.sql.*;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 public class controller {
     public static void main(String[] args) {
         String url = "jdbc:mysql://localhost:3306/apple";
@@ -16,21 +18,37 @@ public class controller {
         ResultSetMetaData metaData = null;
 
 
-        userInterface.welcome();
-        //接受輸入，並根据输入建query语句
-        Scanner in = new Scanner(System.in);
-//        String queryTable = in.nextLine();
-//        String selectQuery = String.format("SELECT * FROM %s", queryTable);
-        String midQuery = new String();
-        String tableName = new String();
-
-        String operation = in.nextLine();
-
         try {
             // 将数据库连接和statement对象初始化好，以便实现CRUD的各个功能
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
             statement = connection.createStatement();
+
+            //登录流程
+            userInterface.login();
+            Scanner in = new Scanner(System.in);
+            System.out.print("账号:");
+            String account = in.nextLine();
+            System.out.println("密码:");
+            String accpass = in.nextLine();
+
+            //检查用户是否匹配
+            ResultSet auth = statement.executeQuery(
+                    String.format("SELECT count(*) from account where acc='%s' and pass='%s'", account, accpass)
+            );
+            if(!auth.next())
+                exit(1);
+            else {
+                //登录成功，清屏并显示欢迎信息
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                userInterface.welcome();
+            }
+
+            //接受輸入，並根据输入建query语句
+            String midQuery = new String();
+            String tableName = new String();
+            String operation = in.nextLine();
 
             // 创建语句构造器
             userInterface.tableNameHint();
@@ -75,13 +93,12 @@ public class controller {
                     midQuery = qConstructor.insertQuery(metaData);
                     System.out.println(midQuery);//将插入语句直接回显，直到稳定了再去数据库中执行插入语句
                     break;
+                case "update":
+                case "update ":
+                    
                 default:
                     throw new SQLException();
             }
-
-
-
-
 
 
         } catch (SQLException e) {
@@ -100,7 +117,7 @@ public class controller {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            in.close();
+//            in.close();
             userInterface.end();
         }
     }

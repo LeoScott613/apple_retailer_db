@@ -1,6 +1,9 @@
 package interf;
 
 public class userInterface {
+    public static void login() {
+        System.out.println("*********请登录*********");
+    }
     public static void welcome() {
         String tableList = "warehouse admin raw\nproduct supplier account log";
 
