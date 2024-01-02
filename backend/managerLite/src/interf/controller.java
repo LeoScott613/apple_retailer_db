@@ -102,7 +102,7 @@ public class controller {
                     resultSet = statement.executeQuery(midQuery);
                     metaData = resultSet.getMetaData();
                     //2.将表格元数据递交给SQL构造器
-                    midQuery = qConstructor.insertQuery(metaData);
+                    midQuery = qConstructor.updateQuery(metaData);
                     System.out.println(midQuery);
                 default:
                     throw new SQLException();
