@@ -39,3 +39,40 @@ begin
 end;
 //
 delimiter ;
+
+delimiter //
+create trigger raw_rcap_insert
+before insert on raw
+for each row
+begin
+    update warehouse set rcap=rcap-NEW.rinv where wno=NEW.wno;
+end;
+//
+delimiter ;
+
+delimiter //
+create trigger product_rcap_insert
+before insert on product 
+for each row
+begin
+    update warehouse set rcap=rcap-NEW.pinv where wno=NEW.wno;
+end;
+//
+delimiter ;
+
+delimiter //
+create trigger raw_rcap_update
+before update on raw
+for each row
+begin
+    if (NEW.rinv>OLD.rinv) then
+        update warehouse set rcap=rcap-(NEW.rinv-OLD.rinv) where wno=NEW.wno;
+    end if;
+
+    if (NEW.rinv<OLD.rinv) then
+        update warehouse set rcap=rcap-(OLD.rinv-NEW.rinv) where wno=NEW.wno;
+    end if;
+
+end;
+//
+delimiter ;
