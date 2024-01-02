@@ -22,9 +22,21 @@ public class queryConstructor {
         return String.format("SELECT * FROM %s;", tableName);
     }
 
-    public String insertQuery(ResultSetMetaData metaData) {
-        //准备获取输入
+    public String insertQuery(ResultSetMetaData metaData) throws SQLException{
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        //打印表头
+        System.out.println("表名: " + tableName);
+        int columnCount = metaData.getColumnCount();
         userInterface.insertHint();
+        for (int i = 1; i <= columnCount; i++) {
+//                System.out.println(metaData.getColumnLabel(i) + " (" + metaData.getColumnTypeName(i) + ")");
+            System.out.print(metaData.getColumnLabel(i) + "\t");
+        }
+        System.out.println();
+
+        //准备获取输入
         Scanner in = new Scanner(System.in);
         StringBuilder resultBuilder = new StringBuilder("INSERT INTO ");
         resultBuilder.append(tableName).append(" VALUES (");
@@ -63,15 +75,16 @@ public class queryConstructor {
         List<String> column = new ArrayList<>();
 
         //显示表头
-        System.out.println("该表的属性: " + tableName);
+//        System.out.println("该表的属性: ");
+        System.out.println("输入想改的属性名");
         int columnCount = metaData.getColumnCount();
         for (int i = 1; i <= columnCount; i++) {
             column.add(metaData.getColumnLabel(i));
-            System.out.print(metaData.getColumnLabel(i) + "\t");
+            System.out.print(metaData.getColumnLabel(i) + ", ");
         }
+        System.out.println();
 
         Scanner in = new Scanner(System.in);
-        System.out.println("输入想改的属性名");
         String columnName = in.nextLine();
         System.out.println("输入更改值");
         String columnValue = in.nextLine();
@@ -95,8 +108,13 @@ public class queryConstructor {
             return String.format("update %s set %s='%s' where %s=%s", tableName, columnName, columnValue, firstColName, id);
     }
 
-    public static String deleteQuery() {
-        return "";
+    public String deleteQuery(ResultSetMetaData metaData) throws SQLException {
+        Scanner in = new Scanner(System.in);
+        System.out.println("输入想删除的记录id号");
+        String rowid = in.nextLine();
+        String idcolumn = metaData.getColumnLabel(1);
+
+        return String.format("DELETE FROM %s WHERE %s=%s",tableName,idcolumn,rowid);
     }
 
     public void clean() {

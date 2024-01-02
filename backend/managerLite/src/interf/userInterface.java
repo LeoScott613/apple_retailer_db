@@ -17,7 +17,7 @@ public class userInterface {
         System.out.println("------------欢迎------------");
         System.out.println("数据库中有的数据表");
         System.out.println(tableList);
-        System.out.println("\n支持的操作：select, insert");
+        System.out.println("\n支持的操作：select, insert, update");
         System.out.println("---------------------------");
     }
 
@@ -46,7 +46,7 @@ public class userInterface {
      */
     public static void insertHint() {
 
-        System.out.println("输入你想插入的数据：");
+        System.out.println("输入你想插入的数据, 回车分隔：");
     }
 
     public static void end() {
