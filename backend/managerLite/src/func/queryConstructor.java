@@ -1,14 +1,14 @@
 package func;
 
+import interf.userInterface;
+
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.List;
-import java.util.Scanner;
-import java.sql.Types.*;
 import java.util.ArrayList;
-
-import interf.userInterface;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class queryConstructor {
     private String tableName;
@@ -75,26 +75,31 @@ public class queryConstructor {
         String columnName = in.nextLine();
         System.out.println("输入更改值");
         String columnValue = in.nextLine();
+        System.out.println("输入更改行的主键标号");
+        String id = in.nextLine();
+        if (columnName.isEmpty() | columnValue.isEmpty() | id.isEmpty())
+            throw new SQLException();//保证完整性
 
         //根据属性名找到待更新的列号
         int colNo = 0;
         for (String col : column) {
             colNo++;
-            if (columnName == col)
+            if (Objects.equals(columnName, col))
                 break;
         }
 
-        if(metaData.getColumnType(colNo)==Types.INTEGER)
-            return String.format("update %s set %s=%s",tableName,columnName,columnValue);
+        String firstColName = column.get(0);
+        if (metaData.getColumnType(colNo) == Types.INTEGER)
+            return String.format("update %s set %s=%s where %s=%s", tableName, columnName, columnValue, firstColName, id);
         else
-            return String.format("update %s set %s='%s'",tableName,columnName,columnValue);
+            return String.format("update %s set %s='%s' where %s=%s", tableName, columnName, columnValue, firstColName, id);
     }
 
     public static String deleteQuery() {
         return "";
     }
 
-    private void clean() {
+    public void clean() {
         tableName = null;
     }
 

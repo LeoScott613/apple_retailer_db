@@ -14,8 +14,8 @@ public class controller {
         String password = "220610";
         Connection connection = null;
         Statement statement = null;
-        ResultSet resultSet = null;
-        ResultSetMetaData metaData = null;
+        ResultSet resultSet;
+        ResultSetMetaData metaData;
 
 
         try {
@@ -125,8 +125,7 @@ public class controller {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-//            in.close();
-            userInterface.end();
         }
+        userInterface.end();
     }
 }
