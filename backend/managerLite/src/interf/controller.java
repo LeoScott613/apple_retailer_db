@@ -34,25 +34,27 @@ public class controller {
 
             //检查用户是否匹配
             ResultSet auth = statement.executeQuery(
-                    String.format("SELECT count(*) from account where acc='%s' and pass='%s'", account, accpass)
+                    String.format("SELECT * from account where (acc='%s' and pass='%s')", account, accpass)
             );
-            if(!auth.next())
+            if(!auth.next()) {
+                userInterface.loginFailed();
                 exit(1);
+            }
             else {
-                //登录成功，清屏并显示欢迎信息
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
+                //登录成功
                 userInterface.welcome();
             }
 
-            //接受輸入，並根据输入建query语句
-            String midQuery = new String();
-            String tableName = new String();
-            String operation = in.nextLine();
-
-            // 创建语句构造器
+            //输入要操作的表
+            String midQuery;
+            String tableName;
             userInterface.tableNameHint();
-            tableName = in.next();
+            tableName = in.nextLine();
+
+
+            //输入操作，并创建SQL语句构造器
+            userInterface.operationHint();
+            String operation = in.nextLine();
             queryConstructor qConstructor = new queryConstructor(tableName);
 
             switch (operation) {
@@ -95,7 +97,13 @@ public class controller {
                     break;
                 case "update":
                 case "update ":
-                    
+                    //1.获取表格元数据
+                    midQuery = qConstructor.selectQuery();
+                    resultSet = statement.executeQuery(midQuery);
+                    metaData = resultSet.getMetaData();
+                    //2.将表格元数据递交给SQL构造器
+                    midQuery = qConstructor.insertQuery(metaData);
+                    System.out.println(midQuery);
                 default:
                     throw new SQLException();
             }
