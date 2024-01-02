@@ -59,8 +59,6 @@ public class queryConstructor {
             System.out.println("insert语句构造器中的SQL操作失败");
             e.printStackTrace();
         }
-
-        in.close();
         return resultBuilder.toString();
     }
 

@@ -83,6 +83,7 @@ public class controller {
                             System.out.println();
                         }
                         System.out.println("查询完成");
+                        in.nextLine();
                         //查询结束
                         break;
                     case "insert":
@@ -95,6 +96,7 @@ public class controller {
                         midQuery = qConstructor.insertQuery(metaData);
                         statement.execute(midQuery);
                         System.out.println("插入完成");
+                        in.nextLine();
                         break;
                     case "update":
                     case "update ":
@@ -124,6 +126,7 @@ public class controller {
                         midQuery = qConstructor.updateQuery(metaData);
                         statement.execute(midQuery);
                         System.out.println("更新完成");
+                        in.nextLine();
                         break;
                     case "delete":
                     case "delete ":

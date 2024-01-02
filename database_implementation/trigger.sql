@@ -62,7 +62,7 @@ delimiter ;
 
 delimiter //
 create trigger raw_rcap_update
-before update on raw
+after update on raw
 for each row
 begin
     if (NEW.rinv>OLD.rinv) then
@@ -70,9 +70,24 @@ begin
     end if;
 
     if (NEW.rinv<OLD.rinv) then
-        update warehouse set rcap=rcap-(OLD.rinv-NEW.rinv) where wno=NEW.wno;
+        update warehouse set rcap=rcap+(OLD.rinv-NEW.rinv) where wno=NEW.wno;
+    end if;
+end;
+//
+delimiter ;
+
+delimiter //
+create trigger product_rcap_update
+after update on product
+for each row
+begin
+    if (NEW.pinv>OLD.pinv) then
+        update warehouse set rcap=rcap-(NEW.pinv-OLD.pinv) where wno=NEW.wno;
     end if;
 
+    if (NEW.pinv<OLD.pinv) then
+        update warehouse set rcap=rcap+(OLD.pinv-NEWpinv) where wno=NEW.wno;
+    end if;
 end;
 //
 delimiter ;
