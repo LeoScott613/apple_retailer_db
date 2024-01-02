@@ -2,6 +2,7 @@ package interf;
 
 import func.queryConstructor;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -26,8 +27,8 @@ public class controller {
             statement = connection.createStatement();
 
             //登录流程
-            userInterface.login();
             Scanner in = new Scanner(System.in);
+            userInterface.login();
             System.out.print("账号:");
             String account = in.nextLine();
             System.out.println("密码:");
@@ -137,13 +138,18 @@ public class controller {
                     default:
                         throw new SQLException();
                 }
+                System.in.read(new byte[System.in.available()]);
             }
         } catch (SQLException e) {
             System.out.println("SQL操作失败");
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             System.out.println("加载驱动失败");
-        } finally {
+        } catch (IOException e) {
+            System.out.println("缓冲区刷新失败");
+            e.printStackTrace();
+        }
+        finally {
             try {
                 if (statement != null) {
                     statement.close();
