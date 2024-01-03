@@ -19,52 +19,51 @@ public class controller {
         ResultSet resultSet;
         ResultSetMetaData metaData;
 
+        while (true) {
+            try {
+                // Ω´ ˝æ›ø‚¡¨Ω”∫Õstatement∂‘œÛ≥ı ºªØ∫√£¨“‘±„ µœ÷CRUDµƒ∏˜∏ˆπ¶ƒ‹
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                connection = DriverManager.getConnection(url, username, password);
+                statement = connection.createStatement();
 
-        try {
-            // Â∞ÜÊï∞ÊçÆÂ∫ìËøûÊé•ÂíåstatementÂØπË±°ÂàùÂßãÂåñÂ•ΩÔºå‰ª•‰æøÂÆûÁé∞CRUDÁöÑÂêÑ‰∏™ÂäüËÉΩ
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(url, username, password);
-            statement = connection.createStatement();
+                //µ«¬º¡˜≥Ã
+                Scanner in = new Scanner(System.in);
+                userInterface.login();
+                System.out.print("’À∫≈:");
+                String account = in.nextLine();
+                System.out.println("√‹¬Î:");
+                String accpass = in.nextLine();
 
-            //ÁôªÂΩïÊµÅÁ®ã
-            Scanner in = new Scanner(System.in);
-            userInterface.login();
-            System.out.print("Ë¥¶Âè∑:");
-            String account = in.nextLine();
-            System.out.println("ÂØÜÁ†Å:");
-            String accpass = in.nextLine();
+                //ºÏ≤È”√ªß «∑Ò∆•≈‰
+                ResultSet auth = statement.executeQuery(
+                        String.format("SELECT * from account where (acc='%s' and pass='%s')", account, accpass)
+                );
+                if (!auth.next()) {
+                    userInterface.loginFailed();
+                    exit(1);
+                }
 
-            //Ê£ÄÊü•Áî®Êà∑ÊòØÂê¶ÂåπÈÖç
-            ResultSet auth = statement.executeQuery(
-                    String.format("SELECT * from account where (acc='%s' and pass='%s')", account, accpass)
-            );
-            if (!auth.next()) {
-                userInterface.loginFailed();
-                exit(1);
-            }
-            while (true) {
                 userInterface.welcome();
 
-                //ËæìÂÖ•Ë¶ÅÊìç‰ΩúÁöÑË°®
+                // ‰»Î“™≤Ÿ◊˜µƒ±Ì
                 String midQuery;
                 String tableName;
                 userInterface.tableNameHint();
                 tableName = in.nextLine();
 
-                //ËæìÂÖ•Êìç‰ΩúÔºåÂπ∂ÂàõÂª∫SQLËØ≠Âè•ÊûÑÈÄ†Âô®
+                // ‰»Î≤Ÿ◊˜£¨≤¢¥¥Ω®SQL”Ôæ‰ππ‘Ï∆˜
                 userInterface.operationHint();
                 String operation = in.nextLine();
                 queryConstructor qConstructor = new queryConstructor(tableName);
 
                 switch (operation) {
-                    case "select":
-                    case "select ":
+                    case "select", "select ", "≤È—Ø", "≤È—Ø " -> {
                         midQuery = qConstructor.selectQuery();
 
-                        //ÂºÄÂßãÊâßË°åÊü•ËØ¢
+                        //ø™ º÷¥––≤È—Ø
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
-                        //1.Ëé∑ÂèñË°®Â§¥
+                        //1.ªÒ»°±ÌÕ∑
                         System.out.println("Table: " + tableName);
                         int columnCount = metaData.getColumnCount();
                         for (int i = 1; i <= columnCount; i++) {
@@ -72,39 +71,37 @@ public class controller {
                             System.out.print(metaData.getColumnLabel(i) + "\t\t");
                         }
                         System.out.println();
-                        //2.ËæìÂá∫ÂÖ®Ë°®ÂÜÖÂÆπÁöÑÈÄöÁî®ÊñπÊ≥ïÔºöÊ†πÊçÆË°®Ê†ºÂÖÉÊï∞ÊçÆËøõË°åÂæ™ÁéØËæìÂá∫ÔºåÊâÄÊúâËæìÂá∫ÁªìÊûúÂè™ÊòØÁî®ObjË£ÖËΩΩ
+                        //2. ‰≥ˆ»´±Ìƒ⁄»›µƒÕ®”√∑Ω∑®£∫∏˘æ›±Ì∏Ò‘™ ˝æ›Ω¯––—≠ª∑ ‰≥ˆ£¨À˘”– ‰≥ˆΩ·π˚÷ª «”√Obj◊∞‘ÿ
                         while (resultSet.next()) {
-                            // ÈÄöÁî®ËæìÂá∫Ê®°Âºè
+                            // Õ®”√ ‰≥ˆƒ£ Ω
                             for (int i = 1; i <= columnCount; i++) {
-                                // Ëé∑Âèñ‰∏çÂêåÁ±ªÂûãÁöÑÊï∞ÊçÆ
+                                // ªÒ»°≤ªÕ¨¿‡–Õµƒ ˝æ›
                                 Object value = resultSet.getObject(i);
                                 System.out.print(value + "\t\t");
                             }
                             System.out.println();
                         }
-                        System.out.println("Êü•ËØ¢ÂÆåÊàê");
+                        System.out.println("≤È—ØÕÍ≥…");
                         in.nextLine();
-                        //Êü•ËØ¢ÁªìÊùü
-                        break;
-                    case "insert":
-                    case "insert ":
-                        //1.Ëé∑ÂèñË°®Ê†ºÂÖÉÊï∞ÊçÆ
+                    }
+                    //≤È—ØΩ· ¯
+                    case "insert", "insert ", "≤Â»Î", "≤Â»Î " -> {
+                        //1.ªÒ»°±Ì∏Ò‘™ ˝æ›
                         midQuery = qConstructor.selectQuery();
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
-                        //2.Â∞ÜË°®Ê†ºÂÖÉÊï∞ÊçÆÈÄí‰∫§ÁªôSQLÊûÑÈÄ†Âô®
+                        //2.Ω´±Ì∏Ò‘™ ˝æ›µ›Ωª∏¯SQLππ‘Ï∆˜
                         midQuery = qConstructor.insertQuery(metaData);
                         statement.execute(midQuery);
-                        System.out.println("ÊèíÂÖ•ÂÆåÊàê");
+                        System.out.println("≤Â»ÎÕÍ≥…");
                         in.nextLine();
-                        break;
-                    case "update":
-                    case "update ":
-                        //1.Ëé∑ÂèñË°®Ê†ºÂÖÉÊï∞ÊçÆ
+                    }
+                    case "update", "update ", "∏¸–¬", "∏¸–¬ " -> {
+                        //1.ªÒ»°±Ì∏Ò‘™ ˝æ›
                         midQuery = qConstructor.selectQuery();
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
-                        //2.Ëé∑ÂèñË°®Â§¥
+                        //2.ªÒ»°±ÌÕ∑
                         System.out.println("Table: " + tableName);
                         int columnCount2 = metaData.getColumnCount();
                         for (int i = 1; i <= columnCount2; i++) {
@@ -112,59 +109,56 @@ public class controller {
                             System.out.print(metaData.getColumnLabel(i) + "\t\t");
                         }
                         System.out.println();
-                        //3.ËæìÂá∫ÂÖ®Ë°®ÂÜÖÂÆπ
+                        //3. ‰≥ˆ»´±Ìƒ⁄»›
                         while (resultSet.next()) {
-                            // ÈÄöÁî®ËæìÂá∫Ê®°Âºè
+                            // Õ®”√ ‰≥ˆƒ£ Ω
                             for (int i = 1; i <= columnCount2; i++) {
-                                // Ëé∑Âèñ‰∏çÂêåÁ±ªÂûãÁöÑÊï∞ÊçÆ
+                                // ªÒ»°≤ªÕ¨¿‡–Õµƒ ˝æ›
                                 Object value = resultSet.getObject(i);
                                 System.out.print(value + "\t\t");
                             }
                             System.out.println();
                         }
-                        //4.Â∞ÜË°®Ê†ºÂÖÉÊï∞ÊçÆÈÄí‰∫§ÁªôSQLÊûÑÈÄ†Âô®
+                        //4.Ω´±Ì∏Ò‘™ ˝æ›µ›Ωª∏¯SQLππ‘Ï∆˜
                         midQuery = qConstructor.updateQuery(metaData);
                         statement.execute(midQuery);
-                        System.out.println("Êõ¥Êñ∞ÂÆåÊàê");
+                        System.out.println("∏¸–¬ÕÍ≥…");
                         in.nextLine();
-                        break;
-                    case "delete":
-                    case "delete ":
-                        //1.Ëé∑ÂèñË°®Ê†ºÂÖÉÊï∞ÊçÆ
+                    }
+                    case "delete", "delete ", "…æ≥˝", "…æ≥˝ " -> {
+                        //1.ªÒ»°±Ì∏Ò‘™ ˝æ›
                         midQuery = qConstructor.selectQuery();
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
-                        //2.Â∞ÜË°®Ê†ºÂÖÉÊï∞ÊçÆÈÄí‰∫§ÁªôSQLÊûÑÈÄ†Âô®
+                        //2.Ω´±Ì∏Ò‘™ ˝æ›µ›Ωª∏¯SQLππ‘Ï∆˜
                         midQuery = qConstructor.deleteQuery(metaData);
                         System.out.println(midQuery);
-                        break;
-                    default:
-                        throw new SQLException();
+                    }
+                    default -> throw new SQLException();
                 }
                 System.in.read(new byte[System.in.available()]);
-            }
-        } catch (SQLException e) {
-            System.out.println("SQLÊìç‰ΩúÂ§±Ë¥•");
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Âä†ËΩΩÈ©±Âä®Â§±Ë¥•");
-        } catch (IOException e) {
-            System.out.println("ÁºìÂÜ≤Âå∫Âà∑Êñ∞Â§±Ë¥•");
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        userInterface.end();
 
+            } catch (SQLException e) {
+                System.out.println("SQL≤Ÿ◊˜ ß∞‹£¨«ÎºÏ≤È≤Ÿ◊˜ «∑Ò∑˚∫œÕÍ’˚–‘");
+            e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                System.out.println("º”‘ÿ«˝∂Ø ß∞‹");
+            } catch (IOException e) {
+                System.out.println("ª∫≥Â«¯À¢–¬ ß∞‹");
+//            e.printStackTrace();
+            } finally {
+                try {
+                    if (statement != null) {
+                        statement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            userInterface.end();
+        }
     }
 }

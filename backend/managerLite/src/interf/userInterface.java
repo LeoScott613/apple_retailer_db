@@ -2,7 +2,7 @@ package interf;
 
 public class userInterface {
     public static void login() {
-        System.out.println("*********è¯·ç™»å½•*********");
+        System.out.println("*********ÇëµÇÂ¼*********");
     }
 
     public static void loginFailed() {
@@ -14,42 +14,42 @@ public class userInterface {
         String tableList = "warehouse admin raw\nproduct supplier log";
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        System.out.println("------------æ¬¢è¿------------");
-        System.out.println("æ•°æ®åº“ä¸­æœ‰çš„æ•°æ®è¡¨");
+        System.out.println("------------»¶Ó­------------");
+        System.out.println("Êı¾İ¿âÖĞÓĞµÄÊı¾İ±í");
         System.out.println(tableList);
-        System.out.println("\næ”¯æŒçš„æ“ä½œï¼šselect, insert, update");
+        System.out.println("\nÖ§³ÖµÄ²Ù×÷£ºselect, insert, update");
         System.out.println("---------------------------");
     }
 
     public static void operationHint() {
-        System.out.println("è¯·è¾“å…¥æ“ä½œ");
+        System.out.println("ÇëÊäÈë²Ù×÷\n(²éÑ¯£¬²åÈë£¬¸üĞÂ£¬É¾³ı)");
     }
 
     /**
-     * æ˜¾ç¤ºè¾“å…¥è¡¨åçš„æç¤ºè¯­
+     * ÏÔÊ¾ÊäÈë±íÃûµÄÌáÊ¾Óï
      */
     public static void tableNameHint() {
 
-        System.out.println("è¾“å…¥ä½ è¦æ“ä½œçš„è¡¨ï¼Œæ”¯æŒä¸­è‹±æ–‡(ä½†ä¸è¦æœ‰å¤šä½™ç©ºæ ¼)ï¼š");
+        System.out.println("ÊäÈëÄãÒª²Ù×÷µÄ±í£¬Ö§³ÖÖĞÓ¢ÎÄ(µ«²»ÒªÓĞ¶àÓà¿Õ¸ñ)£º");
     }
 
     /**
-     * æ˜¾ç¤ºselectåŠŸèƒ½çš„æç¤ºè¯­
+     * ÏÔÊ¾select¹¦ÄÜµÄÌáÊ¾Óï
      */
     public static void selectHint() {
 
-        System.out.println("è¾“å…¥ä½ æƒ³è¦æŸ¥è¯¢çš„è¡¨åï¼Œè¡¨çš„ä¸­æ–‡åæˆ–è€…è¡¨çš„åŸåï¼š");
+        System.out.println("ÊäÈëÄãÏëÒª²éÑ¯µÄ±íÃû£¬±íµÄÖĞÎÄÃû»òÕß±íµÄÔ­Ãû£º");
     }
 
     /**
-     * æ˜¾ç¤ºinsertåŠŸèƒ½çš„æç¤ºè¯­
+     * ÏÔÊ¾insert¹¦ÄÜµÄÌáÊ¾Óï
      */
     public static void insertHint() {
 
-        System.out.println("è¾“å…¥ä½ æƒ³æ’å…¥çš„æ•°æ®, å›è½¦åˆ†éš”ï¼š");
+        System.out.println("ÊäÈëÄãÏë²åÈëµÄÊı¾İ, »Ø³µ·Ö¸ô£º");
     }
 
     public static void end() {
-        System.out.println("*ç¨‹åºç»“æŸ*");
+        System.out.println("*³ÌĞò½áÊø*");
     }
 }

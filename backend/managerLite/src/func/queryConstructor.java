@@ -26,8 +26,8 @@ public class queryConstructor {
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
-        //æ‰“å°è¡¨å¤´
-        System.out.println("è¡¨å: " + tableName);
+        //´òÓ¡±íÍ·
+        System.out.println("±íÃû: " + tableName);
         int columnCount = metaData.getColumnCount();
         userInterface.insertHint();
         for (int i = 1; i <= columnCount; i++) {
@@ -36,17 +36,17 @@ public class queryConstructor {
         }
         System.out.println();
 
-        //å‡†å¤‡è·å–è¾“å…¥
+        //×¼±¸»ñÈ¡ÊäÈë
         Scanner in = new Scanner(System.in);
         StringBuilder resultBuilder = new StringBuilder("INSERT INTO ");
         resultBuilder.append(tableName).append(" VALUES (");
 
-        //æ ¹æ®å…ƒæ•°æ®å¾ªç¯è·å–è¾“å…¥å¹¶æ„é€ ç»“æœ
+        //¸ù¾İÔªÊı¾İÑ­»·»ñÈ¡ÊäÈë²¢¹¹Ôì½á¹û
         try {
             int columnLength = metaData.getColumnCount();
             for (int i = 0; i < columnLength; i++) {
                 if (metaData.getColumnType(i + 1) != Types.INTEGER) {
-                    //å¦‚æœä¸æ˜¯æ•°å­—ç±»å‹çš„ï¼Œéƒ½è¦åœ¨æ’å…¥æ•°æ®å‰åç”¨å¼•å·åŒ…å›´
+                    //Èç¹û²»ÊÇÊı×ÖÀàĞÍµÄ£¬¶¼ÒªÔÚ²åÈëÊı¾İÇ°ºóÓÃÒıºÅ°üÎ§
                     resultBuilder.append("'").append(in.nextLine()).append("'");
                 } else
                     resultBuilder.append(in.nextLine());
@@ -56,25 +56,25 @@ public class queryConstructor {
             }
             resultBuilder.append(");");
         } catch (SQLException e) {
-            System.out.println("insertè¯­å¥æ„é€ å™¨ä¸­çš„SQLæ“ä½œå¤±è´¥");
+            System.out.println("insertÓï¾ä¹¹ÔìÆ÷ÖĞµÄSQL²Ù×÷Ê§°Ü");
             e.printStackTrace();
         }
         return resultBuilder.toString();
     }
 
     /**
-     * updateè¯­å¥æ„é€ å™¨
+     * updateÓï¾ä¹¹ÔìÆ÷
      *
-     * @param metaData ç›¸å…³è¡¨çš„å…ƒæ•°æ®
-     * @return SQLè¯­å¥
+     * @param metaData Ïà¹Ø±íµÄÔªÊı¾İ
+     * @return SQLÓï¾ä
      */
     public String updateQuery(ResultSetMetaData metaData) throws SQLException {
-        //è¡¨å¤´å­˜å‚¨å™¨
+        //±íÍ·´æ´¢Æ÷
         List<String> column = new ArrayList<>();
 
-        //æ˜¾ç¤ºè¡¨å¤´
-//        System.out.println("è¯¥è¡¨çš„å±æ€§: ");
-        System.out.println("è¾“å…¥æƒ³æ”¹çš„å±æ€§å");
+        //ÏÔÊ¾±íÍ·
+//        System.out.println("¸Ã±íµÄÊôĞÔ: ");
+        System.out.println("ÊäÈëÏë¸ÄµÄÊôĞÔÃû");
         int columnCount = metaData.getColumnCount();
         for (int i = 1; i <= columnCount; i++) {
             column.add(metaData.getColumnLabel(i));
@@ -84,14 +84,14 @@ public class queryConstructor {
 
         Scanner in = new Scanner(System.in);
         String columnName = in.nextLine();
-        System.out.println("è¾“å…¥æ›´æ”¹å€¼");
+        System.out.println("ÊäÈë¸ü¸ÄÖµ");
         String columnValue = in.nextLine();
-        System.out.println("è¾“å…¥æ›´æ”¹è¡Œçš„ä¸»é”®æ ‡å·");
+        System.out.println("ÊäÈë¸ü¸ÄĞĞµÄÖ÷¼ü±êºÅ");
         String id = in.nextLine();
         if (columnName.isEmpty() | columnValue.isEmpty() | id.isEmpty())
-            throw new SQLException();//ä¿è¯å®Œæ•´æ€§
+            throw new SQLException();//±£Ö¤ÍêÕûĞÔ
 
-        //æ ¹æ®å±æ€§åæ‰¾åˆ°å¾…æ›´æ–°çš„åˆ—å·
+        //¸ù¾İÊôĞÔÃûÕÒµ½´ı¸üĞÂµÄÁĞºÅ
         int colNo = 0;
         for (String col : column) {
             colNo++;
@@ -108,7 +108,7 @@ public class queryConstructor {
 
     public String deleteQuery(ResultSetMetaData metaData) throws SQLException {
         Scanner in = new Scanner(System.in);
-        System.out.println("è¾“å…¥æƒ³åˆ é™¤çš„è®°å½•idå·");
+        System.out.println("ÊäÈëÏëÉ¾³ıµÄ¼ÇÂ¼idºÅ");
         String rowid = in.nextLine();
         String idcolumn = metaData.getColumnLabel(1);
 
@@ -120,20 +120,20 @@ public class queryConstructor {
     }
 
     /**
-     * å°†ä¸­æ–‡è¡¨åç¿»è¯‘æˆè‹±æ–‡
+     * ½«ÖĞÎÄ±íÃû·­Òë³ÉÓ¢ÎÄ
      *
-     * @param tableName å¾…ç¿»è¯‘çš„è¡¨å
-     * @return è‹±æ–‡ç»“æœï¼Œå¦‚æœä¸æ˜¯ä¸­æ–‡è¡¨åè¾“å…¥å°±è¿”å›åŸæ–‡
+     * @param tableName ´ı·­ÒëµÄ±íÃû
+     * @return Ó¢ÎÄ½á¹û£¬Èç¹û²»ÊÇÖĞÎÄ±íÃûÊäÈë¾Í·µ»ØÔ­ÎÄ
      */
     private static String translate(String tableName) {
         switch (tableName) {
-            case "ä»“åº“" -> tableName = "warehouse";
-            case "ç®¡ç†å‘˜" -> tableName = "admin";
-            case "åŸæ–™" -> tableName = "raw";
-            case "äº§å“" -> tableName = "product";
-            case "è´¦å·" -> tableName = "account";
-            case "æ—¥å¿—" -> tableName = "log";
-            case "ä¾›åº”å•†" -> tableName = "supplier";
+            case "²Ö¿â" -> tableName = "warehouse";
+            case "¹ÜÀíÔ±" -> tableName = "admin";
+            case "Ô­ÁÏ" -> tableName = "raw";
+            case "²úÆ·" -> tableName = "product";
+            case "ÕËºÅ" -> tableName = "account";
+            case "ÈÕÖ¾" -> tableName = "log";
+            case "¹©Ó¦ÉÌ" -> tableName = "supplier";
             default -> {
             }
         }
