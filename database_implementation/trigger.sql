@@ -86,13 +86,14 @@ begin
     end if;
 
     if (NEW.pinv<OLD.pinv) then
-        update warehouse set rcap=rcap+(OLD.pinv-NEWpinv) where wno=NEW.wno;
+        update warehouse set rcap=rcap+(OLD.pinv-NEW.pinv) where wno=NEW.wno;
     end if;
 end;
 //
 delimiter ;
 
 -- 阻止Log插入
+delimiter //
 CREATE TRIGGER block_insert
   BEFORE INSERT ON log
   FOR EACH ROW
@@ -100,3 +101,21 @@ BEGIN
   SIGNAL SQLSTATE '45000'
     SET MESSAGE_TEXT = 'New user insertion is not allowed.';
 END;
+//
+CREATE TRIGGER block_update
+  BEFORE update ON log
+  FOR EACH ROW
+BEGIN
+  SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'New user update is not allowed.';
+END;
+//
+CREATE TRIGGER block_delete
+  BEFORE delete ON log
+  FOR EACH ROW
+BEGIN
+  SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'New user deletion is not allowed.';
+END;
+//
+delimiter ;
