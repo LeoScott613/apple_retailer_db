@@ -57,11 +57,20 @@ public class controller {
                 String tableName;
                 userInterface.tableNameHint();
                 tableName = in.nextLine();
+                queryConstructor qConstructor = new queryConstructor(tableName);
+
+                //如果是视图，就不用接受功能输入了
+                boolean operationFlag = true;
+                if (tableName.equals("product_warehouse") | tableName.equals("raw_supplier") | tableName.equals("raw_warehouse") | tableName.equals("warehouse_admin"))
+                    operationFlag = false;
 
                 //输入操作，并创建SQL语句构造器
-                userInterface.operationHint();
-                String operation = in.nextLine();
-                queryConstructor qConstructor = new queryConstructor(tableName);
+                String operation;
+                if (operationFlag) {
+                    userInterface.operationHint();
+                    operation = in.nextLine();
+                } else
+                    operation = "select";
 
                 switch (operation) {
                     case "select", "select ", "查询", "查询 " -> {
