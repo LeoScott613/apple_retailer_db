@@ -9,6 +9,8 @@ import java.util.Scanner;
 import static java.lang.System.exit;
 
 public class controller {
+    private final static String tableMaker = "\t\t";
+
     public static void main(String[] args) {
 
         String url = "jdbc:mysql://localhost:3306/apple";
@@ -24,19 +26,19 @@ public class controller {
         while (true) {
             try {
                 if (firstRunFlag) {
-                    // ½«Êı¾İ¿âÁ¬½ÓºÍstatement¶ÔÏó³õÊ¼»¯ºÃ£¬ÒÔ±ãÊµÏÖCRUDµÄ¸÷¸ö¹¦ÄÜ
+                    // å°†æ•°æ®åº“è¿æ¥å’Œstatementå¯¹è±¡åˆå§‹åŒ–å¥½ï¼Œä»¥ä¾¿å®ç°CRUDçš„å„ä¸ªåŠŸèƒ½
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     connection = DriverManager.getConnection(url, username, password);
                     statement = connection.createStatement();
 
-                    //µÇÂ¼Á÷³Ì
+                    //ç™»å½•æµç¨‹
                     userInterface.login();
-                    System.out.print("ÕËºÅ:");
+                    System.out.print("è´¦å·:");
                     String account = in.nextLine();
-                    System.out.println("ÃÜÂë:");
+                    System.out.println("å¯†ç :");
                     String accpass = in.nextLine();
 
-                    //¼ì²éÓÃ»§ÊÇ·ñÆ¥Åä
+                    //æ£€æŸ¥ç”¨æˆ·æ˜¯å¦åŒ¹é…
                     ResultSet auth = statement.executeQuery(
                             String.format("SELECT * from account where (acc='%s' and pass='%s')", account, accpass)
                     );
@@ -50,120 +52,120 @@ public class controller {
 
                 userInterface.welcome();
 
-                //ÊäÈëÒª²Ù×÷µÄ±í
+                //è¾“å…¥è¦æ“ä½œçš„è¡¨
                 String midQuery;
                 String tableName;
                 userInterface.tableNameHint();
                 tableName = in.nextLine();
 
-                //ÊäÈë²Ù×÷£¬²¢´´½¨SQLÓï¾ä¹¹ÔìÆ÷
+                //è¾“å…¥æ“ä½œï¼Œå¹¶åˆ›å»ºSQLè¯­å¥æ„é€ å™¨
                 userInterface.operationHint();
                 String operation = in.nextLine();
                 queryConstructor qConstructor = new queryConstructor(tableName);
 
                 switch (operation) {
-                    case "select", "select ", "²éÑ¯", "²éÑ¯ " -> {
+                    case "select", "select ", "æŸ¥è¯¢", "æŸ¥è¯¢ " -> {
                         midQuery = qConstructor.selectQuery();
 
-                        //¿ªÊ¼Ö´ĞĞ²éÑ¯
+                        //å¼€å§‹æ‰§è¡ŒæŸ¥è¯¢
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
-                        //1.»ñÈ¡±íÍ·
+                        //1.è·å–è¡¨å¤´
                         System.out.println("Table: " + tableName);
                         int columnCount = metaData.getColumnCount();
                         for (int i = 1; i <= columnCount; i++) {
 //                System.out.println(metaData.getColumnLabel(i) + " (" + metaData.getColumnTypeName(i) + ")");
-                            System.out.print(metaData.getColumnLabel(i) + "\t\t");
+                            System.out.print(metaData.getColumnLabel(i) + tableMaker);
                         }
                         System.out.println();
-                        //2.Êä³öÈ«±íÄÚÈİµÄÍ¨ÓÃ·½·¨£º¸ù¾İ±í¸ñÔªÊı¾İ½øĞĞÑ­»·Êä³ö£¬ËùÓĞÊä³ö½á¹ûÖ»ÊÇÓÃObj×°ÔØ
+                        //2.è¾“å‡ºå…¨è¡¨å†…å®¹çš„é€šç”¨æ–¹æ³•ï¼šæ ¹æ®è¡¨æ ¼å…ƒæ•°æ®è¿›è¡Œå¾ªç¯è¾“å‡ºï¼Œæ‰€æœ‰è¾“å‡ºç»“æœåªæ˜¯ç”¨Objè£…è½½
                         while (resultSet.next()) {
-                            // Í¨ÓÃÊä³öÄ£Ê½
+                            // é€šç”¨è¾“å‡ºæ¨¡å¼
                             for (int i = 1; i <= columnCount; i++) {
-                                // »ñÈ¡²»Í¬ÀàĞÍµÄÊı¾İ
+                                // è·å–ä¸åŒç±»å‹çš„æ•°æ®
                                 Object value = resultSet.getObject(i);
-                                System.out.print(value + "\t\t");
+                                System.out.print(value + tableMaker);
                             }
                             System.out.println();
                         }
-                        System.out.println("²éÑ¯Íê³É");
+                        System.out.println("æŸ¥è¯¢å®Œæˆ");
                     }
-                    //²éÑ¯½áÊø
-                    case "insert", "insert ", "²åÈë", "²åÈë " -> {
-                        //1.»ñÈ¡±í¸ñÔªÊı¾İ
+                    //æŸ¥è¯¢ç»“æŸ
+                    case "insert", "insert ", "æ’å…¥", "æ’å…¥ " -> {
+                        //1.è·å–è¡¨æ ¼å…ƒæ•°æ®
                         midQuery = qConstructor.selectQuery();
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
-                        //2.½«±í¸ñÔªÊı¾İµİ½»¸øSQL¹¹ÔìÆ÷
+                        //2.å°†è¡¨æ ¼å…ƒæ•°æ®é€’äº¤ç»™SQLæ„é€ å™¨
                         midQuery = qConstructor.insertQuery(metaData);
                         statement.execute(midQuery);
-                        System.out.println("²åÈëÍê³É");
+                        System.out.println("æ’å…¥å®Œæˆ");
                     }
-                    case "update", "update ", "¸üĞÂ", "¸üĞÂ " -> {
-                        //1.»ñÈ¡±í¸ñÔªÊı¾İ
+                    case "update", "update ", "æ›´æ–°", "æ›´æ–° " -> {
+                        //1.è·å–è¡¨æ ¼å…ƒæ•°æ®
                         midQuery = qConstructor.selectQuery();
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
-                        //2.»ñÈ¡±íÍ·
+                        //2.è·å–è¡¨å¤´
                         System.out.println("Table: " + tableName);
                         int columnCount2 = metaData.getColumnCount();
                         for (int i = 1; i <= columnCount2; i++) {
-                            System.out.print(metaData.getColumnLabel(i) + "\t\t");
+                            System.out.print(metaData.getColumnLabel(i) + tableMaker);
                         }
                         System.out.println();
-                        //3.Êä³öÈ«±íÄÚÈİ
+                        //3.è¾“å‡ºå…¨è¡¨å†…å®¹
                         while (resultSet.next()) {
-                            // Í¨ÓÃÊä³öÄ£Ê½
+                            // é€šç”¨è¾“å‡ºæ¨¡å¼
                             for (int i = 1; i <= columnCount2; i++) {
-                                // »ñÈ¡²»Í¬ÀàĞÍµÄÊı¾İ
+                                // è·å–ä¸åŒç±»å‹çš„æ•°æ®
                                 Object value = resultSet.getObject(i);
-                                System.out.print(value + "\t\t");
+                                System.out.print(value + tableMaker);
                             }
                             System.out.println();
                         }
-                        //4.½«±í¸ñÔªÊı¾İµİ½»¸øSQL¹¹ÔìÆ÷
+                        //4.å°†è¡¨æ ¼å…ƒæ•°æ®é€’äº¤ç»™SQLæ„é€ å™¨
                         midQuery = qConstructor.updateQuery(metaData);
                         statement.execute(midQuery);
-                        System.out.println("¸üĞÂÍê³É");
+                        System.out.println("æ›´æ–°å®Œæˆ");
                     }
-                    case "delete", "delete ", "É¾³ı", "É¾³ı " -> {
-                        //1.»ñÈ¡±í¸ñÔªÊı¾İ
+                    case "delete", "delete ", "åˆ é™¤", "åˆ é™¤ " -> {
+                        //1.è·å–è¡¨æ ¼å…ƒæ•°æ®
                         midQuery = qConstructor.selectQuery();
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
-                        //2.»ñÈ¡±íÍ·
+                        //2.è·å–è¡¨å¤´
                         System.out.println("Table: " + tableName);
                         int columnCount2 = metaData.getColumnCount();
                         for (int i = 1; i <= columnCount2; i++) {
-                            System.out.print(metaData.getColumnLabel(i) + "\t\t");
+                            System.out.print(metaData.getColumnLabel(i) + tableMaker);
                         }
                         System.out.println();
-                        //3.Êä³öÈ«±íÄÚÈİ
+                        //3.è¾“å‡ºå…¨è¡¨å†…å®¹
                         while (resultSet.next()) {
-                            // Í¨ÓÃÊä³öÄ£Ê½
+                            // é€šç”¨è¾“å‡ºæ¨¡å¼
                             for (int i = 1; i <= columnCount2; i++) {
-                                // »ñÈ¡²»Í¬ÀàĞÍµÄÊı¾İ
+                                // è·å–ä¸åŒç±»å‹çš„æ•°æ®
                                 Object value = resultSet.getObject(i);
-                                System.out.print(value + "\t\t");
+                                System.out.print(value + tableMaker);
                             }
                             System.out.println();
                         }
-                        //2.½«±í¸ñÔªÊı¾İµİ½»¸øSQL¹¹ÔìÆ÷
+                        //2.å°†è¡¨æ ¼å…ƒæ•°æ®é€’äº¤ç»™SQLæ„é€ å™¨
                         midQuery = qConstructor.deleteQuery(metaData);
                         statement.execute(midQuery);
-                        System.out.println("É¾³ıÍê³É");
+                        System.out.println("åˆ é™¤å®Œæˆ");
                     }
                     default -> throw new SQLException();
                 }
                 System.in.read(new byte[System.in.available()]);
 
             } catch (SQLException e) {
-                System.out.println("SQL²Ù×÷Ê§°Ü£¬Çë¼ì²é²Ù×÷ÊÇ·ñ·ûºÏÍêÕûĞÔ");
+                System.out.println("SQLæ“ä½œå¤±è´¥ï¼Œè¯·æ£€æŸ¥æ“ä½œæ˜¯å¦ç¬¦åˆå®Œæ•´æ€§");
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                System.out.println("¼ÓÔØÇı¶¯Ê§°Ü");
+                System.out.println("åŠ è½½é©±åŠ¨å¤±è´¥");
             } catch (IOException e) {
-                System.out.println("»º³åÇøË¢ĞÂÊ§°Ü");
+                System.out.println("ç¼“å†²åŒºåˆ·æ–°å¤±è´¥");
 //            e.printStackTrace();
             } finally {
                 in.nextLine();
