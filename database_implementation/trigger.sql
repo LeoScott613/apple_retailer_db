@@ -91,3 +91,12 @@ begin
 end;
 //
 delimiter ;
+
+-- 阻止Log插入
+CREATE TRIGGER block_insert
+  BEFORE INSERT ON log
+  FOR EACH ROW
+BEGIN
+  SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'New user insertion is not allowed.';
+END;

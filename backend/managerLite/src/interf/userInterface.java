@@ -18,7 +18,7 @@ public class userInterface {
         System.out.println("数据库中有的数据表");
         System.out.println(tableList);
         System.out.println("\n支持的操作：select, insert, update");
-        System.out.println("---------------------------");
+        System.out.println("----------------------------");
     }
 
     public static void operationHint() {
