@@ -120,6 +120,27 @@ public class queryConstructor {
         return String.format("DELETE FROM %s WHERE %s=%s", tableName, idcolumn, rowid);
     }
 
+    public String storeProcedureQuery(int number, int param) {
+        String proce1 = "GetProductInventory";
+        String proce2 = "GetRawInventory";
+        String proce3 = "GetCapacity";
+        String finalProce;
+        switch (number) {
+            case 1:
+                finalProce = proce1;
+                break;
+            case 2:
+                finalProce = proce2;
+                break;
+            case 3:
+                finalProce = proce3;
+                break;
+            default:
+                finalProce = proce3;
+        }
+        return String.format("call %s(%d)",finalProce,param);
+    }
+
     public void clean() {
         tableName = null;
     }

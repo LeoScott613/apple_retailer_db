@@ -85,3 +85,18 @@ big mistake：无法更新raw表
 switch到12345，default判断一下是不是12345
 
 仓库容量：获取标号仓库的容量，计算为百分比
+
+程序中加上功能：调用存储过程
+绘制ui
+输入hint
+获取参数输入
+得到结果
+
+需要存储过程的调用语句
+
+case5调用输入了参数
+显示输入hint
+获取参数输入
+构造指令，在so中专门执行
+
+flag为false时，如果operation为store，就不加select，否则加

@@ -21,10 +21,14 @@ public class userInterface {
         System.out.println("数据库中有的视图");
         System.out.println(viewList);
         System.out.println("\n支持的操作：select, insert, update, delete\n");
+        System.out.println("快捷操作");
         System.out.println("1. 查看仓库储量");
         System.out.println("2. 查看管理员列表");
         System.out.println("3. 查看原料列表");
         System.out.println("4. 查看成品列表");
+        System.out.println("5. 查看某个成品的库存");
+        System.out.println("6. 查看某个原料的库存");
+        System.out.println("7. 查看某个仓库容量");
         System.out.println("----------------------------------------------------");
     }
 

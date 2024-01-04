@@ -53,11 +53,12 @@ public class controller {
                 userInterface.welcome();
 
                 //输入要操作的表
-                String midQuery;
+                String midQuery = null;
                 String tableName;
                 userInterface.tableNameHint();
                 tableName = in.nextLine();
                 queryConstructor qConstructor = new queryConstructor(tableName);
+                String operation = "select";
 
                 //如果是视图，就不用接受功能输入了
                 boolean operationFlag = true;
@@ -65,7 +66,8 @@ public class controller {
                     operationFlag = false;
 
                 //如果是快捷查询，就不用接受功能输入了
-                if (tableName.equals("1") | tableName.equals("2") | tableName.equals("3") | tableName.equals("4")) {
+                int param = 1;
+                if (tableName.equals("1") | tableName.equals("2") | tableName.equals("3") | tableName.equals("4") | tableName.equals("5") | tableName.equals("6") | tableName.equals("7")) {
                     operationFlag = false;
                     switch (tableName) {
                         case "1":
@@ -80,19 +82,35 @@ public class controller {
                         case "4":
                             qConstructor.setTableName("product");
                             break;
+                        case "5":
+                            System.out.println("输入参数：");
+                            param = in.nextInt();
+                            midQuery = qConstructor.storeProcedureQuery(1, param);
+                            operation = "storeProcedureMessage";
+                            break;
+                        case "6":
+                            System.out.println("输入参数：");
+                            param = in.nextInt();
+                            midQuery = qConstructor.storeProcedureQuery(2, param);
+                            operation = "storeProcedureMessage";
+                            break;
+                        case "7":
+                            System.out.println("输入参数：");
+                            param = in.nextInt();
+                            midQuery = qConstructor.storeProcedureQuery(3, param);
+                            operation = "storeProcedureMessage";
+                            break;
                         default:
                             System.out.println("输入了错误的快捷指令");
-                            operationFlag = true;
+                            continue;
                     }
                 }
 
                 //输入操作，并创建SQL语句构造器
-                String operation;
                 if (operationFlag) {
                     userInterface.operationHint();
                     operation = in.nextLine();
-                } else
-                    operation = "select";
+                }
 
                 switch (operation) {
                     case "select", "select ", "查询", "查询 " -> {
@@ -185,6 +203,25 @@ public class controller {
                         midQuery = qConstructor.deleteQuery(metaData);
                         statement.execute(midQuery);
                         System.out.println("删除完成");
+                    }
+                    case "storeProcedureMessage" -> {
+                        if (midQuery == null) {
+                            throw new SQLException();
+                        }
+                        resultSet = statement.executeQuery(midQuery);
+                        //获取表头
+                        metaData = resultSet.getMetaData();
+                        int columnCount2 = metaData.getColumnCount();
+                        //输出全表内容
+                        while (resultSet.next()) {
+                            for (int i = 1; i <= columnCount2; i++) {
+                                Object value = resultSet.getObject(i);
+                                System.out.print(value + tableMaker);
+                            }
+                            System.out.println();
+                        }
+                        //暂停
+                        in.nextLine();
                     }
                     default -> throw new SQLException();
                 }
