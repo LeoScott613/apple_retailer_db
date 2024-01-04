@@ -13,6 +13,14 @@ import java.util.Scanner;
 public class queryConstructor {
     private String tableName;
 
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
     public queryConstructor(String tableName) {
         this.tableName = tableName;
     }
@@ -22,7 +30,7 @@ public class queryConstructor {
         return String.format("SELECT * FROM %s;", tableName);
     }
 
-    public String insertQuery(ResultSetMetaData metaData) throws SQLException{
+    public String insertQuery(ResultSetMetaData metaData) throws SQLException {
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
@@ -48,8 +56,7 @@ public class queryConstructor {
                 if (metaData.getColumnType(i + 1) != Types.INTEGER) {
                     //如果不是数字类型的，都要在插入数据前后用引号包围
                     resultBuilder.append("'").append(in.nextLine()).append("'");
-                } else
-                    resultBuilder.append(in.nextLine());
+                } else resultBuilder.append(in.nextLine());
                 if (i < columnLength - 1) {
                     resultBuilder.append(", ");
                 }
@@ -88,15 +95,13 @@ public class queryConstructor {
         String columnValue = in.nextLine();
         System.out.println("输入更改行的主键标号");
         String id = in.nextLine();
-        if (columnName.isEmpty() | columnValue.isEmpty() | id.isEmpty())
-            throw new SQLException();//保证完整性
+        if (columnName.isEmpty() | columnValue.isEmpty() | id.isEmpty()) throw new SQLException();//保证完整性
 
         //根据属性名找到待更新的列号
         int colNo = 0;
         for (String col : column) {
             colNo++;
-            if (Objects.equals(columnName, col))
-                break;
+            if (Objects.equals(columnName, col)) break;
         }
 
         String firstColName = column.get(0);
@@ -112,7 +117,7 @@ public class queryConstructor {
         String rowid = in.nextLine();
         String idcolumn = metaData.getColumnLabel(1);
 
-        return String.format("DELETE FROM %s WHERE %s=%s",tableName,idcolumn,rowid);
+        return String.format("DELETE FROM %s WHERE %s=%s", tableName, idcolumn, rowid);
     }
 
     public void clean() {

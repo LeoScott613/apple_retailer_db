@@ -15,12 +15,16 @@ public class userInterface {
     public static void welcome() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
-        System.out.println("------------------------欢迎------------------------");
+        System.out.println("--------------------欢迎@卢弘翔---------------------");
         System.out.println("数据库中有的数据表");
         System.out.println(tableList);
         System.out.println("数据库中有的视图");
         System.out.println(viewList);
-        System.out.println("\n支持的操作：select, insert, update, delete");
+        System.out.println("\n支持的操作：select, insert, update, delete\n");
+        System.out.println("1. 查看仓库储量");
+        System.out.println("2. 查看管理员列表");
+        System.out.println("3. 查看原料列表");
+        System.out.println("4. 查看成品列表");
         System.out.println("----------------------------------------------------");
     }
 

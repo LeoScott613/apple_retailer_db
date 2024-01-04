@@ -64,6 +64,28 @@ public class controller {
                 if (tableName.equals("product_warehouse") | tableName.equals("raw_supplier") | tableName.equals("raw_warehouse") | tableName.equals("warehouse_admin"))
                     operationFlag = false;
 
+                //如果是快捷查询，就不用接受功能输入了
+                if (tableName.equals("1") | tableName.equals("2") | tableName.equals("3") | tableName.equals("4")) {
+                    operationFlag = false;
+                    switch (tableName) {
+                        case "1":
+                            qConstructor.setTableName("warehouse");
+                            break;
+                        case "2":
+                            qConstructor.setTableName("admin");
+                            break;
+                        case "3":
+                            qConstructor.setTableName("raw");
+                            break;
+                        case "4":
+                            qConstructor.setTableName("product");
+                            break;
+                        default:
+                            System.out.println("输入了错误的快捷指令");
+                            operationFlag = true;
+                    }
+                }
+
                 //输入操作，并创建SQL语句构造器
                 String operation;
                 if (operationFlag) {
@@ -80,7 +102,7 @@ public class controller {
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
                         //1.获取表头
-                        System.out.println("Table: " + tableName);
+                        System.out.println("Table: " + qConstructor.getTableName());
                         int columnCount = metaData.getColumnCount();
                         for (int i = 1; i <= columnCount; i++) {
 //                System.out.println(metaData.getColumnLabel(i) + " (" + metaData.getColumnTypeName(i) + ")");
@@ -116,7 +138,7 @@ public class controller {
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
                         //2.获取表头
-                        System.out.println("Table: " + tableName);
+                        System.out.println("Table: " + qConstructor.getTableName());
                         int columnCount2 = metaData.getColumnCount();
                         for (int i = 1; i <= columnCount2; i++) {
                             System.out.print(metaData.getColumnLabel(i) + tableMaker);
@@ -143,7 +165,7 @@ public class controller {
                         resultSet = statement.executeQuery(midQuery);
                         metaData = resultSet.getMetaData();
                         //2.获取表头
-                        System.out.println("Table: " + tableName);
+                        System.out.println("Table: " + qConstructor.getTableName());
                         int columnCount2 = metaData.getColumnCount();
                         for (int i = 1; i <= columnCount2; i++) {
                             System.out.print(metaData.getColumnLabel(i) + tableMaker);
